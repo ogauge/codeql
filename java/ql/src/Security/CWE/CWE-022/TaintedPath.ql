@@ -16,9 +16,6 @@
 import java
 import semmle.code.java.security.PathCreation
 import semmle.code.java.security.TaintedPathQuery
-
-module TaintedPathFlow = TaintTracking::Global<DataFlow::FilteredConfig<TaintedPathConfig>>;
-
 import TaintedPathFlow::PathGraph
 
 from TaintedPathFlow::PathNode source, TaintedPathFlow::PathNode sink

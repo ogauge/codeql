@@ -15,10 +15,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.ImplicitPendingIntentsQuery
-
-module ImplicitPendingIntentStartFlow =
-  TaintTracking::GlobalWithState<DataFlow::FilteredStateConfig<ImplicitPendingIntentStartConfig>>;
-
 import ImplicitPendingIntentStartFlow::PathGraph
 
 from ImplicitPendingIntentStartFlow::PathNode source, ImplicitPendingIntentStartFlow::PathNode sink

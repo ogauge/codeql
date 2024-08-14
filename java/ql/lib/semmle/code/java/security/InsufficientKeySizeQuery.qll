@@ -36,4 +36,4 @@ module KeySizeConfig implements DataFlow::StateConfigSig {
 }
 
 /** Tracks key sizes used in cryptographic algorithms. */
-module KeySizeFlow = DataFlow::GlobalWithState<KeySizeConfig>;
+module KeySizeFlow = DataFlow::GlobalWithState<DataFlow::FilteredStateConfig<KeySizeConfig>>;

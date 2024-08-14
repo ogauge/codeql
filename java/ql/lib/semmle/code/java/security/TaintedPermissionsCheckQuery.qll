@@ -62,4 +62,5 @@ module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow from user input to a permissions check. */
-module TaintedPermissionsCheckFlow = TaintTracking::Global<TaintedPermissionsCheckFlowConfig>;
+module TaintedPermissionsCheckFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<TaintedPermissionsCheckFlowConfig>>;

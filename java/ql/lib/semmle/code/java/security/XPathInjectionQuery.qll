@@ -17,4 +17,4 @@ module XPathInjectionConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for XPath injection vulnerabilities.
  */
-module XPathInjectionFlow = TaintTracking::Global<XPathInjectionConfig>;
+module XPathInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<XPathInjectionConfig>>;

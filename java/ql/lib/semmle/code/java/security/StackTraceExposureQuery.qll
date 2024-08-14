@@ -7,7 +7,7 @@ private import semmle.code.java.security.InformationLeak
 /**
  * One of the `printStackTrace()` overloads on `Throwable`.
  */
-class PrintStackTraceMethod extends Method {
+private class PrintStackTraceMethod extends Method {
   PrintStackTraceMethod() {
     this.getDeclaringType()
         .getSourceDeclaration()
@@ -17,11 +17,7 @@ class PrintStackTraceMethod extends Method {
   }
 }
 
-/**
- * Flow configuration for xss vulnerable writer source flowing to `Throwable.printStackTrace()` on
- * a stream that is connected to external output.
- */
-module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
+private module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof XssVulnerableWriterSourceNode }
 
   predicate isSink(DataFlow::Node sink) {
@@ -32,7 +28,7 @@ module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow:
 }
 
 private module ServletWriterSourceToPrintStackTraceMethodFlow =
-  TaintTracking::Global<ServletWriterSourceToPrintStackTraceMethodFlowConfig>;
+  TaintTracking::Global<DataFlow::FilteredConfig<ServletWriterSourceToPrintStackTraceMethodFlowConfig>>;
 
 /**
  * A call that uses `Throwable.printStackTrace()` on a stream that is connected
@@ -59,10 +55,7 @@ private predicate printWriterOnStringWriter(Expr printWriter, Variable stringWri
   )
 }
 
-/**
- * Holds if `stackTraceString` writes the stack trace from `exception` to a string.
- */
-predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
+private predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
   exists(Expr printWriter, Variable stringWriterVar, MethodCall printStackCall |
     printWriterOnStringWriter(printWriter, stringWriterVar) and
     printStackCall.getMethod() instanceof PrintStackTraceMethod and
@@ -73,15 +66,14 @@ predicate stackTraceExpr(Expr exception, MethodCall stackTraceString) {
   )
 }
 
-/** Flow configuration for stack trace flowing to http response. */
-module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
+private module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
 
 private module StackTraceStringToHttpResponseSinkFlow =
-  TaintTracking::Global<StackTraceStringToHttpResponseSinkFlowConfig>;
+  TaintTracking::Global<DataFlow::FilteredConfig<StackTraceStringToHttpResponseSinkFlowConfig>>;
 
 /**
  * Holds if `call` writes the data of `stackTrace` to an external stream.

@@ -42,4 +42,5 @@ module InsecureTrustManagerConfig implements DataFlow::ConfigSig {
   }
 }
 
-module InsecureTrustManagerFlow = DataFlow::Global<InsecureTrustManagerConfig>;
+module InsecureTrustManagerFlow =
+  DataFlow::Global<DataFlow::FilteredConfig<InsecureTrustManagerConfig>>;

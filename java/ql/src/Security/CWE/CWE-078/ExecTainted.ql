@@ -14,19 +14,7 @@
 
 import java
 import semmle.code.java.security.CommandLineQuery
-private import semmle.code.java.dataflow.TaintTracking
-
-module InputToArgumentToExecFlow =
-  TaintTracking::Global<DataFlow::FilteredConfig<InputToArgumentToExecFlowConfig>>;
-
 import InputToArgumentToExecFlow::PathGraph
-
-predicate execIsTainted(
-  InputToArgumentToExecFlow::PathNode source, InputToArgumentToExecFlow::PathNode sink, Expr execArg
-) {
-  InputToArgumentToExecFlow::flowPath(source, sink) and
-  argumentToExec(execArg, sink.getNode())
-}
 
 from
   InputToArgumentToExecFlow::PathNode source, InputToArgumentToExecFlow::PathNode sink, Expr execArg

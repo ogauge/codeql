@@ -44,4 +44,5 @@ module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
 }
 
 /** Taint-tracking flow to find paths from remote sources to content URI resolutions. */
-module UnsafeContentResolutionFlow = TaintTracking::Global<UnsafeContentResolutionConfig>;
+module UnsafeContentResolutionFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<UnsafeContentResolutionConfig>>;

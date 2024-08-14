@@ -14,10 +14,6 @@
 
 import java
 import semmle.code.java.security.NumericCastTaintedQuery
-private import semmle.code.java.dataflow.TaintTracking
-
-module NumericCastFlow = TaintTracking::Global<DataFlow::FilteredConfig<NumericCastFlowConfig>>;
-
 import NumericCastFlow::PathGraph
 
 from NumericCastFlow::PathNode source, NumericCastFlow::PathNode sink, NumericNarrowingCastExpr exp

@@ -12,9 +12,6 @@
 
 import java
 import semmle.code.java.security.InsecureBeanValidationQuery
-
-module BeanValidationFlow = TaintTracking::Global<DataFlow::FilteredConfig<BeanValidationConfig>>;
-
 import BeanValidationFlow::PathGraph
 
 from BeanValidationFlow::PathNode source, BeanValidationFlow::PathNode sink

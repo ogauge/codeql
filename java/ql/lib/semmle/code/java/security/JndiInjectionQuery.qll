@@ -48,7 +48,7 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unvalidated user input that is used in JNDI lookup */
-module JndiInjectionFlow = TaintTracking::Global<JndiInjectionFlowConfig>;
+module JndiInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<JndiInjectionFlowConfig>>;
 
 /**
  * A method that does a JNDI lookup when it receives a `SearchControls` argument with `setReturningObjFlag` = `true`

@@ -20,4 +20,4 @@ module LdapInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow from remote sources to LDAP injection vulnerabilities. */
-module LdapInjectionFlow = TaintTracking::Global<LdapInjectionFlowConfig>;
+module LdapInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<LdapInjectionFlowConfig>>;

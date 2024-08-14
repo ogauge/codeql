@@ -46,7 +46,7 @@ module XsltInjectionFlowConfig implements DataFlow::ConfigSig {
 /**
  * Tracks flow from unvalidated user input to XSLT transformation.
  */
-module XsltInjectionFlow = TaintTracking::Global<XsltInjectionFlowConfig>;
+module XsltInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<XsltInjectionFlowConfig>>;
 
 /**
  * A set of additional taint steps to consider when taint tracking XSLT related data flows.

@@ -15,34 +15,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.StackTraceExposureQuery
-
-private module ServletWriterSourceToPrintStackTraceMethodFlow =
-  TaintTracking::Global<DataFlow::FilteredConfig<ServletWriterSourceToPrintStackTraceMethodFlowConfig>>;
-
-private predicate printsStackToWriter(MethodCall call) {
-  exists(PrintStackTraceMethod printStackTrace |
-    call.getMethod() = printStackTrace and
-    ServletWriterSourceToPrintStackTraceMethodFlow::flowToExpr(call.getAnArgument())
-  )
-}
-
-predicate printsStackExternally(MethodCall call, Expr stackTrace) {
-  printsStackToWriter(call) and
-  call.getQualifier() = stackTrace and
-  not call.getQualifier() instanceof SuperAccess
-}
-
-private module StackTraceStringToHttpResponseSinkFlow =
-  TaintTracking::Global<DataFlow::FilteredConfig<StackTraceStringToHttpResponseSinkFlowConfig>>;
-
-predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stackTrace) {
-  exists(MethodCall stackTraceString |
-    stackTraceExpr(stackTrace, stackTraceString) and
-    StackTraceStringToHttpResponseSinkFlow::flow(DataFlow::exprNode(stackTraceString), externalExpr)
-  )
-}
 
 from Expr externalExpr, Expr errorInformation
 where

@@ -13,9 +13,6 @@
 
 import java
 import semmle.code.java.security.JndiInjectionQuery
-
-module JndiInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<JndiInjectionFlowConfig>>;
-
 import JndiInjectionFlow::PathGraph
 
 from JndiInjectionFlow::PathNode source, JndiInjectionFlow::PathNode sink

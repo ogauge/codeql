@@ -68,7 +68,8 @@ module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
 }
 
 /** Data flow to model the flow of a `TrustAllHostnameVerifier` to a `set(Default)HostnameVerifier` call. */
-module TrustAllHostnameVerifierFlow = DataFlow::Global<TrustAllHostnameVerifierConfig>;
+module TrustAllHostnameVerifierFlow =
+  DataFlow::Global<DataFlow::FilteredConfig<TrustAllHostnameVerifierConfig>>;
 
 /**
  * A sink that sets the `HostnameVerifier` on `HttpsURLConnection`.

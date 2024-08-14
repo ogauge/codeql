@@ -14,10 +14,6 @@
 import java
 import semmle.code.java.security.Encryption
 import semmle.code.java.security.BrokenCryptoAlgorithmQuery
-private import semmle.code.java.dataflow.TaintTracking
-
-module InsecureCryptoFlow = TaintTracking::Global<DataFlow::FilteredConfig<InsecureCryptoConfig>>;
-
 import InsecureCryptoFlow::PathGraph
 
 from

@@ -75,4 +75,5 @@ module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
 /**
  * Tracks instances of `setWebContentDebuggingEnabled` with `true` values.
  */
-module WebviewDebugEnabledFlow = DataFlow::Global<WebviewDebugEnabledConfig>;
+module WebviewDebugEnabledFlow =
+  DataFlow::Global<DataFlow::FilteredConfig<WebviewDebugEnabledConfig>>;

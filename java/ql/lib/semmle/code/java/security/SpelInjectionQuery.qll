@@ -39,7 +39,7 @@ module SpelInjectionConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a SpEL expression. */
-module SpelInjectionFlow = TaintTracking::Global<SpelInjectionConfig>;
+module SpelInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<SpelInjectionConfig>>;
 
 /** Default sink for SpEL injection vulnerabilities. */
 private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {

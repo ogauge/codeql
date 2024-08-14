@@ -14,9 +14,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.LdapInjectionQuery
-
-module LdapInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<LdapInjectionFlowConfig>>;
-
 import LdapInjectionFlow::PathGraph
 
 from LdapInjectionFlow::PathNode source, LdapInjectionFlow::PathNode sink

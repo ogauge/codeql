@@ -52,4 +52,4 @@ module IntentUriPermissionManipulationConfig implements DataFlow::ConfigSig {
  * Taint tracking flow for user-provided Intents being returned to third party apps.
  */
 module IntentUriPermissionManipulationFlow =
-  TaintTracking::Global<IntentUriPermissionManipulationConfig>;
+  TaintTracking::Global<DataFlow::FilteredConfig<IntentUriPermissionManipulationConfig>>;

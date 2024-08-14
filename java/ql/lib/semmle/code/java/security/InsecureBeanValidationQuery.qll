@@ -52,7 +52,7 @@ module BeanValidationConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow from user input to the argument of a method that builds constraint error messages. */
-module BeanValidationFlow = TaintTracking::Global<BeanValidationConfig>;
+module BeanValidationFlow = TaintTracking::Global<DataFlow::FilteredConfig<BeanValidationConfig>>;
 
 /**
  * A bean validation sink, such as method `buildConstraintViolationWithTemplate`

@@ -38,4 +38,4 @@ module PartialPathTraversalFromRemoteConfig implements DataFlow::ConfigSig {
 
 /** Tracks flow of unsafe user input that is used to validate against path traversal, but is insufficient and remains vulnerable to Partial Path Traversal. */
 module PartialPathTraversalFromRemoteFlow =
-  TaintTracking::Global<PartialPathTraversalFromRemoteConfig>;
+  TaintTracking::Global<DataFlow::FilteredConfig<PartialPathTraversalFromRemoteConfig>>;

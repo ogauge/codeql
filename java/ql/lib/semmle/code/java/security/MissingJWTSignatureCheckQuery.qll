@@ -38,4 +38,5 @@ module MissingJwtSignatureCheckConfig implements DataFlow::ConfigSig {
   }
 }
 
-module MissingJwtSignatureCheckFlow = DataFlow::Global<MissingJwtSignatureCheckConfig>;
+module MissingJwtSignatureCheckFlow =
+  DataFlow::Global<DataFlow::FilteredConfig<MissingJwtSignatureCheckConfig>>;

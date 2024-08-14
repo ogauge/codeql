@@ -13,9 +13,6 @@
 
 import java
 import semmle.code.java.security.XsltInjectionQuery
-
-module XsltInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<XsltInjectionFlowConfig>>;
-
 import XsltInjectionFlow::PathGraph
 
 from XsltInjectionFlow::PathNode source, XsltInjectionFlow::PathNode sink

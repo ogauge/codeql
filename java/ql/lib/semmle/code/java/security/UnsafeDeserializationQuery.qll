@@ -334,7 +334,7 @@ deprecated class UnsafeDeserializationConfig extends TaintTracking::Configuratio
 }
 
 /** Tracks flows from remote user input to a deserialization sink. */
-module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
+private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
@@ -346,7 +346,8 @@ module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
 }
 
-module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;
+module UnsafeDeserializationFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<UnsafeDeserializationConfig>>;
 
 /**
  * Gets a safe usage of the `use` method of Flexjson, which could be:

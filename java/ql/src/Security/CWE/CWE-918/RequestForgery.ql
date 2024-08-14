@@ -13,9 +13,6 @@
 
 import java
 import semmle.code.java.security.RequestForgeryConfig
-
-module RequestForgeryFlow = TaintTracking::Global<DataFlow::FilteredConfig<RequestForgeryConfig>>;
-
 import RequestForgeryFlow::PathGraph
 
 from RequestForgeryFlow::PathNode source, RequestForgeryFlow::PathNode sink

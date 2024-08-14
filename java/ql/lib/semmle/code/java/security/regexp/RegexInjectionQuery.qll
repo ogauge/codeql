@@ -34,4 +34,4 @@ module RegexInjectionConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for untrusted user input used to construct regular expressions.
  */
-module RegexInjectionFlow = TaintTracking::Global<RegexInjectionConfig>;
+module RegexInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<RegexInjectionConfig>>;

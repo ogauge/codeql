@@ -200,4 +200,4 @@ module UrlForwardFlowConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for URL forwarding.
  */
-module UrlForwardFlow = TaintTracking::Global<UrlForwardFlowConfig>;
+module UrlForwardFlow = TaintTracking::Global<DataFlow::FilteredConfig<UrlForwardFlowConfig>>;

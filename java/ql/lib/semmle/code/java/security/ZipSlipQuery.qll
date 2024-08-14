@@ -47,7 +47,7 @@ module ZipSlipConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow from archive entries to file creation. */
-module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;
+module ZipSlipFlow = TaintTracking::Global<DataFlow::FilteredConfig<ZipSlipConfig>>;
 
 /**
  * A sink that represents a file creation, such as a file write, copy or move operation.
