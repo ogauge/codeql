@@ -437,6 +437,9 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     default predicate includeHiddenNodes() { none() }
+    //
+    // If you add a predicate to ConfigSig, please also add a corresponding
+    // passthrough alias to FilteredConfig below.
   }
 
   /** An input configuration for data flow using flow state. */
@@ -559,6 +562,9 @@ module Configs<LocationSig Location, InputSig<Location> Lang> {
      * is not visualized (as it is in a `path-problem` query).
      */
     default predicate includeHiddenNodes() { none() }
+    //
+    // If you add a predicate to StateConfigSig, please also add a corresponding
+    // passthrough alias to FilteredStateConfig below.
   }
 }
 
@@ -834,5 +840,167 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
         Merged::PathGraph::subpaths(arg, par, ret, out)
       }
     }
+  }
+
+  /**
+   * This wrapper applies alert filters to an existing `ConfigSig` module. It is intended to be used
+   * in the specific case where both the dataflow sources and the dataflow sinks are presented in
+   * the query result, so we need to apply the alert filter on either the source or the sink (which
+   * is what this wrapper does).
+   */
+  module FilteredConfig<ConfigSig Config> implements ConfigSig {
+    private import codeql.util.AlertFiltering
+
+    private module AlertFiltering = AlertFilteringImpl<Location>;
+
+    pragma[noinline]
+    private predicate hasFilteredSource() {
+      exists(Node n | Config::isSource(n) | AlertFiltering::filterByLocation(n.getLocation()))
+    }
+
+    pragma[noinline]
+    private predicate hasFilteredSink() {
+      exists(Node n | Config::isSink(n) | AlertFiltering::filterByLocation(n.getLocation()))
+    }
+
+    predicate isSource(Node source) {
+      Config::isSource(source) and
+      (
+        // If there are filtered sinks, we need to pass through all sources to preserve all alerts
+        // with filtered sinks. Otherwise the only alerts of interest are those with filtered
+        // sources, so we can perform the source filtering right here.
+        hasFilteredSink() or
+        AlertFiltering::filterByLocation(source.getLocation())
+      )
+    }
+
+    predicate isSink(Node sink) {
+      Config::isSink(sink) and
+      (
+        // If there are filtered sources, we need to pass through all sinks to preserve all alerts
+        // with filtered sources. Otherwise the only alerts of interest are those with filtered
+        // sinks, so we can perform the sink filtering right here.
+        hasFilteredSource() or
+        AlertFiltering::filterByLocation(sink.getLocation())
+      )
+    }
+
+    predicate isBarrier = Config::isBarrier/1;
+
+    predicate isBarrierIn = Config::isBarrierIn/1;
+
+    predicate isBarrierOut = Config::isBarrierOut/1;
+
+    predicate isAdditionalFlowStep = Config::isAdditionalFlowStep/2;
+
+    predicate allowImplicitRead = Config::allowImplicitRead/2;
+
+    predicate neverSkip = Config::neverSkip/1;
+
+    predicate fieldFlowBranchLimit = Config::fieldFlowBranchLimit/0;
+
+    predicate accessPathLimit = Config::accessPathLimit/0;
+
+    predicate getAFeature = Config::getAFeature/0;
+
+    predicate sourceGrouping = Config::sourceGrouping/2;
+
+    predicate sinkGrouping = Config::sinkGrouping/2;
+
+    predicate includeHiddenNodes = Config::includeHiddenNodes/0;
+  }
+
+  /**
+   * This wrapper applies alert filters to an existing `StateConfigSig` module. It is intended to be
+   * used in the specific case where both the dataflow sources and the dataflow sinks are present in
+   * the query result, so we need to apply the alert filter on either the source or the sink (which
+   * is what this wrapper does).
+   */
+  module FilteredStateConfig<StateConfigSig Config> implements StateConfigSig {
+    private import codeql.util.AlertFiltering
+
+    private module AlertFiltering = AlertFilteringImpl<Location>;
+
+    class FlowState = Config::FlowState;
+
+    pragma[noinline]
+    private predicate hasFilteredSource() {
+      exists(Node n | Config::isSource(n, _) | AlertFiltering::filterByLocation(n.getLocation()))
+    }
+
+    pragma[noinline]
+    private predicate hasFilteredSink() {
+      exists(Node n |
+        Config::isSink(n, _) or
+        Config::isSink(n)
+      |
+        AlertFiltering::filterByLocation(n.getLocation())
+      )
+    }
+
+    predicate isSource(Node source, FlowState state) {
+      Config::isSource(source, state) and
+      (
+        // If there are filtered sinks, we need to pass through all sources to preserve all alerts
+        // with filtered sinks. Otherwise the only alerts of interest are those with filtered
+        // sources, so we can perform the source filtering right here.
+        hasFilteredSink() or
+        AlertFiltering::filterByLocation(source.getLocation())
+      )
+    }
+
+    predicate isSink(Node sink, FlowState state) {
+      Config::isSink(sink, state) and
+      (
+        // If there are filtered sources, we need to pass through all sinks to preserve all alerts
+        // with filtered sources. Otherwise the only alerts of interest are those with filtered
+        // sinks, so we can perform the sink filtering right here.
+        hasFilteredSource() or
+        AlertFiltering::filterByLocation(sink.getLocation())
+      )
+    }
+
+    predicate isSink(Node sink) {
+      Config::isSink(sink) and
+      (
+        // If there are filtered sources, we need to pass through all sinks to preserve all alerts
+        // with filtered sources. Otherwise the only alerts of interest are those with filtered
+        // sinks, so we can perform the sink filtering right here.
+        hasFilteredSource() or
+        AlertFiltering::filterByLocation(sink.getLocation())
+      )
+    }
+
+    predicate isBarrier = Config::isBarrier/1;
+
+    predicate isBarrier = Config::isBarrier/2;
+
+    predicate isBarrierIn = Config::isBarrierIn/1;
+
+    predicate isBarrierIn = Config::isBarrierIn/2;
+
+    predicate isBarrierOut = Config::isBarrierOut/1;
+
+    predicate isBarrierOut = Config::isBarrierOut/2;
+
+    predicate isAdditionalFlowStep = Config::isAdditionalFlowStep/2;
+
+    predicate isAdditionalFlowStep = Config::isAdditionalFlowStep/4;
+
+    predicate allowImplicitRead = Config::allowImplicitRead/2;
+
+    predicate neverSkip = Config::neverSkip/1;
+
+    predicate fieldFlowBranchLimit = Config::fieldFlowBranchLimit/0;
+
+    predicate accessPathLimit = Config::accessPathLimit/0;
+
+    predicate getAFeature = Config::getAFeature/0;
+
+    predicate sourceGrouping = Config::sourceGrouping/2;
+
+    predicate sinkGrouping = Config::sinkGrouping/2;
+
+    predicate includeHiddenNodes = Config::includeHiddenNodes/0;
   }
 }
