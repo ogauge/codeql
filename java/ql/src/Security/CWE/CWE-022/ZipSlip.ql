@@ -14,6 +14,9 @@
 
 import java
 import semmle.code.java.security.ZipSlipQuery
+
+module ZipSlipFlow = TaintTracking::Global<DataFlow::FilteredConfig<ZipSlipConfig>>;
+
 import ZipSlipFlow::PathGraph
 
 from ZipSlipFlow::PathNode source, ZipSlipFlow::PathNode sink

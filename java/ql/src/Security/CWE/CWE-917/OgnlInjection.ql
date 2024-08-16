@@ -13,6 +13,9 @@
 
 import java
 import semmle.code.java.security.OgnlInjectionQuery
+
+module OgnlInjectionFlow = TaintTracking::Global<DataFlow::FilteredConfig<OgnlInjectionFlowConfig>>;
+
 import OgnlInjectionFlow::PathGraph
 
 from OgnlInjectionFlow::PathNode source, OgnlInjectionFlow::PathNode sink

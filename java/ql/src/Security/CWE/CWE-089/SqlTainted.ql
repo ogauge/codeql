@@ -15,7 +15,17 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SqlInjectionQuery
+
+module QueryInjectionFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<QueryInjectionFlowConfig>>;
+
 import QueryInjectionFlow::PathGraph
+
+predicate queryIsTaintedBy(
+  QueryInjectionSink query, QueryInjectionFlow::PathNode source, QueryInjectionFlow::PathNode sink
+) {
+  QueryInjectionFlow::flowPath(source, sink) and sink.getNode() = query
+}
 
 from
   QueryInjectionSink query, QueryInjectionFlow::PathNode source, QueryInjectionFlow::PathNode sink

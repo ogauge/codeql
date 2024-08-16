@@ -14,6 +14,11 @@
 
 import java
 import semmle.code.java.security.TaintedPermissionsCheckQuery
+private import semmle.code.java.dataflow.TaintTracking
+
+module TaintedPermissionsCheckFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<TaintedPermissionsCheckFlowConfig>>;
+
 import TaintedPermissionsCheckFlow::PathGraph
 
 from

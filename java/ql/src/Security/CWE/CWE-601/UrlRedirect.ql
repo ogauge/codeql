@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.UrlRedirectQuery
+private import semmle.code.java.dataflow.TaintTracking
+
+module UrlRedirectFlow = TaintTracking::Global<DataFlow::FilteredConfig<UrlRedirectConfig>>;
+
 import UrlRedirectFlow::PathGraph
 
 from UrlRedirectFlow::PathNode source, UrlRedirectFlow::PathNode sink

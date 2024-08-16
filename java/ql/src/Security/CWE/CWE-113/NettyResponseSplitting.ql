@@ -93,4 +93,5 @@ private class InsecureDefaultFullHttpRequestClassInstantiation extends RequestSp
 }
 
 from InsecureNettyObjectCreation new
+where AlertFiltering::filterByLocatable(new)
 select new, new.splittingType() + " vulnerability due to header value verification being disabled."

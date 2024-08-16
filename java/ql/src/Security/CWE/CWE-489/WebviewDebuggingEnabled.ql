@@ -12,6 +12,10 @@
 
 import java
 import semmle.code.java.security.WebviewDebuggingEnabledQuery
+
+module WebviewDebugEnabledFlow =
+  DataFlow::Global<DataFlow::FilteredConfig<WebviewDebugEnabledConfig>>;
+
 import WebviewDebugEnabledFlow::PathGraph
 
 from WebviewDebugEnabledFlow::PathNode source, WebviewDebugEnabledFlow::PathNode sink

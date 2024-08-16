@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.FragmentInjectionQuery
+
+module FragmentInjectionTaintFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<FragmentInjectionTaintConfig>>;
+
 import FragmentInjectionTaintFlow::PathGraph
 
 from FragmentInjectionTaintFlow::PathNode source, FragmentInjectionTaintFlow::PathNode sink

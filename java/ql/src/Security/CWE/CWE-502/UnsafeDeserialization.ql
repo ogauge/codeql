@@ -13,6 +13,10 @@
 
 import java
 import semmle.code.java.security.UnsafeDeserializationQuery
+
+module UnsafeDeserializationFlow =
+  TaintTracking::Global<DataFlow::FilteredConfig<UnsafeDeserializationConfig>>;
+
 import UnsafeDeserializationFlow::PathGraph
 
 from UnsafeDeserializationFlow::PathNode source, UnsafeDeserializationFlow::PathNode sink

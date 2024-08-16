@@ -35,6 +35,7 @@ Variable getVariable(Expr dest) {
 
 from DangerousAssignOpExpr a, Expr e, Top v
 where
+  AlertFiltering::filterByLocatable(a) and
   e = a.getSource() and
   problematicCasting(a.getDest().getType(), e) and
   (

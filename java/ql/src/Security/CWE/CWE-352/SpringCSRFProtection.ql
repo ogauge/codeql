@@ -15,5 +15,7 @@ import java
 import semmle.code.java.security.SpringCsrfProtection
 
 from MethodCall call
-where disablesSpringCsrfProtection(call)
+where
+  AlertFiltering::filterByLocatable(call) and
+  disablesSpringCsrfProtection(call)
 select call, "CSRF vulnerability due to protection being disabled."

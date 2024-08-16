@@ -12,6 +12,11 @@
 
 import java
 import semmle.code.java.security.UnsafeHostnameVerificationQuery
+private import semmle.code.java.dataflow.DataFlow
+
+module TrustAllHostnameVerifierFlow =
+  DataFlow::Global<DataFlow::FilteredConfig<TrustAllHostnameVerifierConfig>>;
+
 import TrustAllHostnameVerifierFlow::PathGraph
 
 from
